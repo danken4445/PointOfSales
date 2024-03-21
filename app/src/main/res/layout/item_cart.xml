@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    app:cardCornerRadius="64dp"
+    app:cardElevation="64dp"
+    android:background="@drawable/border_background3">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageViewCart"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/logo1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.055"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/itemNameCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="itemName"
+            android:textSize="34sp"
+            app:layout_constraintBottom_toTopOf="@+id/itemPriceCart"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+            app:layout_constraintStart_toEndOf="@+id/imageViewCart"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.725"></TextView>
+
+        <TextView
+            android:id="@+id/itemPriceCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="₱: itemPrice"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+            app:layout_constraintStart_toEndOf="@+id/imageViewCart"
+            tools:layout_editor_absoluteY="86dp"></TextView>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="75dp"
+            android:layout_height="150dp"
+            android:gravity="center_vertical"
+
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.969"
+            app:layout_constraintStart_toEndOf="@+id/imageViewCart"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.466">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/quantityConstraint"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/increaseQuantityButtonCart"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:contentDescription="Increase"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/add"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.48"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/itemQuantityTextViewCart" />
+
+                <TextView
+                    android:id="@+id/itemQuantityTextViewCart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Quantity: 0"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.055"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/decreaseQuantityButtonCart"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:contentDescription="Decrease"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/minus"
+                    app:layout_constraintBottom_toTopOf="@+id/itemQuantityTextViewCart"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

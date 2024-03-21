@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/border_background3">
+
+    <!-- Item Image Preview -->
+    <ImageView
+        android:id="@+id/itemImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/logo1"/>
+
+    <!-- Item Name -->
+    <TextView
+        android:id="@+id/itemNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Item Name: "
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/itemPriceTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Price: ₱"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+
+    <!-- Item Quantity -->
+    <LinearLayout
+        android:layout_marginTop="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/increaseQuantityButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/add"
+            android:scaleType="centerCrop"
+            android:contentDescription="Increase"
+            android:background="@null"/>
+
+        <TextView
+            android:id="@+id/itemQuantityTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quantity: 0"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"/>
+
+        <ImageButton
+            android:id="@+id/decreaseQuantityButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/minus"
+            android:scaleType="centerCrop"
+            android:contentDescription="Decrease"
+            android:background="@null"/>
+    </LinearLayout>
+</LinearLayout>
