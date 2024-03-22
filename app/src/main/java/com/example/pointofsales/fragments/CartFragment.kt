@@ -1,9 +1,11 @@
 package com.example.pointofsales.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -13,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pointofsales.R
 import com.example.pointofsales.adapter.CartAdapter
-import com.example.pointofsales.data.CartItem
 import com.example.pointofsales.data.SalesItem
 import com.example.pointofsales.viewmodel.CartViewModel
 
@@ -24,6 +25,7 @@ class CartFragment : Fragment() {
     private lateinit var cartAdapter: CartAdapter
     private lateinit var layoutCartEmpty: ConstraintLayout
     private lateinit var buttonCheckout: AppCompatButton
+    private lateinit var tvTotalPrice: TextView
 
     private var salesItem: SalesItem? = null
 
@@ -41,6 +43,7 @@ class CartFragment : Fragment() {
         cartRecyclerView = view.findViewById(R.id.rvCart)
         layoutCartEmpty = view.findViewById(R.id.layout_cart_empty)
         buttonCheckout = view.findViewById(R.id.buttonCheckout)
+        tvTotalPrice = view.findViewById(R.id.tvTotalPrice)
 
         // Initialize RecyclerView
         cartRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -52,20 +55,26 @@ class CartFragment : Fragment() {
         // Set visibility of cart empty layout
         checkCartEmpty()
 
+        // Calculate and display total price
+        updateTotalPrice()
+
+        // Set onClickListener for checkout button
+        buttonCheckout.setOnClickListener {
+            showCheckoutConfirmationDialog()
+            sendOrderToFirebase()
+        }
+
         // Observe cart items LiveData and update the adapter accordingly
         cartViewModel.cartItems.observe(viewLifecycleOwner) { cartItems ->
             cartAdapter.setItems(cartItems)
             checkCartEmpty() // Check cart empty after updating items
+            updateTotalPrice() // Update total price after cart items change
         }
 
         // Add the sales item to the cart
         salesItem?.let {
             cartViewModel.addItemToCart(it)
-        }
 
-        // Set onClickListener for checkout button
-        buttonCheckout.setOnClickListener {
-            Toast.makeText(requireContext(), "Item Checked Out", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -84,5 +93,26 @@ class CartFragment : Fragment() {
             layoutCartEmpty.visibility = View.GONE
         }
     }
-}
 
+    private fun updateTotalPrice() {
+        val totalPrice = cartViewModel.calculateTotalPrice()
+        val formattedTotalPrice = String.format("₱%.2f", totalPrice) // Format to display with two decimal places
+        tvTotalPrice.text = formattedTotalPrice
+    }
+
+    private fun showCheckoutConfirmationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Do you want to print a Receipt?")
+            .setPositiveButton("Yes") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun sendOrderToFirebase() {
+        cartViewModel.sendOrderToFirebase(requireContext())
+    }
+}

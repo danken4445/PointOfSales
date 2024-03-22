@@ -10,13 +10,14 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="420dp"
-        android:layout_height="250dp"
-        android:orientation="vertical"
+        android:layout_width="650dp"
+        android:layout_height="450dp"
         android:background="@drawable/border_background"
+        android:orientation="vertical"
+        android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintHorizontal_bias="0.088"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.26">
@@ -26,14 +27,13 @@
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp"
             android:outlineProvider="bounds" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/border_background2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +46,7 @@
         <FrameLayout
             android:id="@+id/fragmentContainer2"
             android:layout_width="300dp"
-            android:layout_height="match_parent"
+            android:layout_height="450dp"
             android:padding="8dp" />
 
     </LinearLayout>
@@ -54,22 +54,21 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
-        android:layout_width="450dp"
+        android:layout_width="match_parent"
         android:layout_height="75dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/PrimaryColor"
         android:defaultFocusHighlightEnabled="false"
-        app:itemActiveIndicatorStyle="@anim/spin_button"
+        android:background="@color/PrimaryColor"
         app:itemBackground="@color/PrimaryColor"
         app:itemIconTint="@color/white"
-        app:itemTextAppearanceActiveBoldEnabled="true"
         app:itemTextColor="@color/white"
         app:labelVisibilityMode="labeled"
+        app:itemActiveIndicatorStyle="@anim/spin_button"
+        app:itemTextAppearanceActiveBoldEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        app:menu="@menu/bottom_nav_menu">
+        app:menu="@menu/bottom_nav_menu" >
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/settingsButton"

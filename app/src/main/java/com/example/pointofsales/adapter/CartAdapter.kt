@@ -32,6 +32,19 @@ class CartAdapter : RecyclerView.Adapter<CartAdapter.CartItemViewHolder>() {
         notifyDataSetChanged()
     }
 
+    fun calculateTotalPrice(): Double {
+        var totalPrice = 0.0
+        for (item in items) {
+            val price = item.itemPrice.toDoubleOrNull() ?: 0.0
+            totalPrice += price * item.quantity
+        }
+        return totalPrice
+    }
+
+    fun getItems(): List<CartItem> {
+        return items
+    }
+
     inner class CartItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val itemNameTextView: TextView = itemView.findViewById(R.id.itemNameCart)
         private val itemPriceTextView: TextView = itemView.findViewById(R.id.itemPriceCart)
@@ -39,8 +52,14 @@ class CartAdapter : RecyclerView.Adapter<CartAdapter.CartItemViewHolder>() {
 
         fun bind(item: CartItem) {
             itemNameTextView.text = item.itemName
-            itemPriceTextView.text = "₱${item.itemPrice}"
+            val price = item.itemPrice.toDoubleOrNull()
+            if (price != null) {
+                itemPriceTextView.text = "₱$price"
+            } else {
+                itemPriceTextView.text = "Invalid Price"
+            }
             itemQuantityTextView.text = "Quantity: ${item.quantity}"
         }
+
     }
 }

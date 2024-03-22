@@ -2,7 +2,7 @@
     android:shape="rectangle">
     <!-- Border Color -->
     <stroke
-        android:width="4dp"
+        android:width="8dp"
         android:color="@color/PrimaryColor" /> <!-- Change color as per your requirement -->
 
     <!-- Background Color -->
@@ -11,5 +11,5 @@
 
     <!-- Corner Radius -->
     <corners
-        android:radius="44dp" /> <!-- Change radius as per your requirement -->
+        android:radius="0dp" /> <!-- Change radius as per your requirement -->
 </shape>

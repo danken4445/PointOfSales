@@ -2,23 +2,23 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="260dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp"
     app:cardCornerRadius="64dp"
-    app:cardElevation="64dp"
     android:background="@drawable/border_background3">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <ImageView
             android:id="@+id/imageViewCart"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/logo1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,23 +31,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="itemName"
-            android:textSize="34sp"
-            app:layout_constraintBottom_toTopOf="@+id/itemPriceCart"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/imageViewCart"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.725"></TextView>
+            app:layout_constraintVertical_bias="0.316"></TextView>
 
         <TextView
             android:id="@+id/itemPriceCart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="₱: itemPrice"
-            android:textSize="18sp"
+            android:textSize="16sp"
+            android:textColor="@color/black"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/imageViewCart"
-            tools:layout_editor_absoluteY="86dp"></TextView>
+            app:layout_constraintTop_toBottomOf="@+id/itemNameCart"
+            app:layout_constraintVertical_bias="0.241"></TextView>
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -89,6 +96,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:text="Quantity: 0"
+                    android:textColor="@color/black"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

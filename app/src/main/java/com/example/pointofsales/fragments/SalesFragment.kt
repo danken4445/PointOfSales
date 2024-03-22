@@ -9,11 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pointofsales.R
 import com.example.pointofsales.adapter.SalesAdapter
 import com.example.pointofsales.data.SalesItem
+import com.example.pointofsales.decoration.GridSpacingItemDecoration
 import com.example.pointofsales.viewmodel.CartViewModel
 import com.example.pointofsales.viewmodel.SalesViewModel
 
@@ -33,9 +34,15 @@ class SalesFragment : Fragment(), SalesAdapter.OnAddToCartClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize RecyclerView
+        val spanCount = 2 // Number of columns in the grid
+        val spacing = resources.getDimensionPixelSize(R.dimen.grid_spacing) // Set your desired spacing dimension here
+        val includeEdge = true // Set whether to include spacing at the edges
+
         salesRecyclerView = view.findViewById(R.id.salesRecyclerView)
-        salesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        salesRecyclerView.layoutManager = GridLayoutManager(requireContext(), spanCount)
+
+// Apply ItemDecoration
+        salesRecyclerView.addItemDecoration(GridSpacingItemDecoration(spanCount, spacing, includeEdge))
 
         // Initialize ViewModel
         salesViewModel = ViewModelProvider(this).get(SalesViewModel::class.java)

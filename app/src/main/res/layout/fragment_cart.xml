@@ -137,7 +137,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="45dp"
             android:layout_marginBottom="20dp"
-            android:text="Check out"
+            android:text="Confirm Order"
             app:layout_constraintEnd_toEndOf="@id/rightGuideLine"
             app:layout_constraintStart_toStartOf="@id/leftGuideLine"
             app:layout_constraintTop_toBottomOf="@id/totalBoxContainer"
