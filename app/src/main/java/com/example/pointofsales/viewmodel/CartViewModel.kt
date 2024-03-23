@@ -8,8 +8,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.pointofsales.data.CartItem
 import com.example.pointofsales.data.SalesItem
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ServerValue
+import com.google.firebase.database.ValueEventListener
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -64,7 +68,7 @@ class CartViewModel : ViewModel() {
     }
 
     // Function to send order to Firebase
-    fun sendOrderToFirebase(context: Context) {
+    fun sendOrderToFirebase(context: Context, inventoryViewModel: InventoryViewModel) {
         // Get current date and time
         val currentDateTime = Calendar.getInstance().time
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
@@ -102,6 +106,33 @@ class CartViewModel : ViewModel() {
         // Push order details to Firebase
         ordersRef.child(orderId.toString()).setValue(orderMap)
             .addOnSuccessListener {
+                // Update item quantities under "Items" node
+                val itemsRef = FirebaseDatabase.getInstance().getReference("Items")
+                cartItems.forEach { item ->
+                    itemsRef.orderByChild("itemName").equalTo(item.itemName).addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            if (snapshot.exists()) {
+                                for (itemSnapshot in snapshot.children) {
+                                    val itemKey = itemSnapshot.key
+                                    val currentQuantity = itemSnapshot.child("itemQuantity").getValue(Int::class.java) ?: 0
+                                    val updatedQuantity = currentQuantity - item.quantity
+                                    itemsRef.child(itemKey!!).child("itemQuantity").setValue(updatedQuantity)
+                                        .addOnSuccessListener {
+                                            Log.d("CartViewModel", "Item quantity updated successfully")
+                                        }
+                                        .addOnFailureListener { e ->
+                                            Log.e("CartViewModel", "Failed to update item quantity: ${e.message}")
+                                        }
+                                }
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            Log.e("CartViewModel", "Failed to retrieve item key: ${error.message}")
+                        }
+                    })
+                }
+
                 // Clear the cart after checkout
                 clearCart()
 

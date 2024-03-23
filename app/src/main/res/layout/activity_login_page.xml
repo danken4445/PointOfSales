@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/logoImageView"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
         android:src="@drawable/logo1"
         app:layout_constraintBottom_toTopOf="@+id/empIdEditText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,9 +21,9 @@
 
 
     <ImageView
-        android:layout_width="1200dp"
-        android:layout_height="1200dp"
-        android:layout_marginEnd="808dp"
+        android:layout_width="1000dp"
+        android:layout_height="1000dp"
+        android:layout_marginEnd="700dp"
         android:src="@drawable/chain"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,9 +32,9 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="1200dp"
-        android:layout_height="1200dp"
-        android:layout_marginStart="806dp"
+        android:layout_width="1000dp"
+        android:layout_height="1000dp"
+        android:layout_marginStart="700dp"
         android:src="@drawable/chain"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -78,7 +78,7 @@
         android:id="@+id/loginButton"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:backgroundTint="@color/PrimaryColor"
         android:padding="16dp"
         android:text="Log in"

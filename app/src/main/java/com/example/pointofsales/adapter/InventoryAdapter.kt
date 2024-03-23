@@ -40,7 +40,7 @@ class InventoryAdapter(private val context: Context) : RecyclerView.Adapter<Inve
         private val itemQuantityTextView: TextView = itemView.findViewById(R.id.itemQuantityTextView)
 
         fun bind(item: InventoryItem) {
-            itemNameTextView.text = "Item Name: ${item.itemName}"
+            itemNameTextView.text = "${item.itemName}"
             itemPriceTextView.text = "Price: ₱${item.itemPrice}"
             itemQuantityTextView.text = "Quantity: ${item.itemQuantity}"
             // Load item image using Picasso or any other image loading library

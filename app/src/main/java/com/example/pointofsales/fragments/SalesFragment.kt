@@ -34,7 +34,7 @@ class SalesFragment : Fragment(), SalesAdapter.OnAddToCartClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val spanCount = 2 // Number of columns in the grid
+        val spanCount = 3 // Number of columns in the grid
         val spacing = resources.getDimensionPixelSize(R.dimen.grid_spacing) // Set your desired spacing dimension here
         val includeEdge = true // Set whether to include spacing at the edges
 

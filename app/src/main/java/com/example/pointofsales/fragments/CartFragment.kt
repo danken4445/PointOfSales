@@ -6,28 +6,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pointofsales.R
 import com.example.pointofsales.adapter.CartAdapter
-import com.example.pointofsales.data.SalesItem
 import com.example.pointofsales.viewmodel.CartViewModel
+import com.example.pointofsales.viewmodel.InventoryViewModel
 
 class CartFragment : Fragment() {
 
     private val cartViewModel: CartViewModel by activityViewModels()
+    private val activityViewModel: InventoryViewModel by activityViewModels()
     private lateinit var cartRecyclerView: RecyclerView
     private lateinit var cartAdapter: CartAdapter
     private lateinit var layoutCartEmpty: ConstraintLayout
     private lateinit var buttonCheckout: AppCompatButton
     private lateinit var tvTotalPrice: TextView
-
-    private var salesItem: SalesItem? = null
+    private lateinit var inventoryViewModel: InventoryViewModel // Declare inventoryViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,8 +61,10 @@ class CartFragment : Fragment() {
         // Set onClickListener for checkout button
         buttonCheckout.setOnClickListener {
             showCheckoutConfirmationDialog()
-            sendOrderToFirebase()
         }
+
+        // Initialize inventoryViewModel
+        inventoryViewModel = ViewModelProvider(this).get(InventoryViewModel::class.java)
 
         // Observe cart items LiveData and update the adapter accordingly
         cartViewModel.cartItems.observe(viewLifecycleOwner) { cartItems ->
@@ -70,18 +72,6 @@ class CartFragment : Fragment() {
             checkCartEmpty() // Check cart empty after updating items
             updateTotalPrice() // Update total price after cart items change
         }
-
-        // Add the sales item to the cart
-        salesItem?.let {
-            cartViewModel.addItemToCart(it)
-
-        }
-    }
-
-    fun setSalesItem(item: SalesItem) {
-        salesItem = item
-        // Add the sales item to the cart when it is set
-        cartViewModel.addItemToCart(item)
     }
 
     private fun checkCartEmpty() {
@@ -95,8 +85,8 @@ class CartFragment : Fragment() {
     }
 
     private fun updateTotalPrice() {
-        val totalPrice = cartViewModel.calculateTotalPrice()
-        val formattedTotalPrice = String.format("₱%.2f", totalPrice) // Format to display with two decimal places
+        val totalPrice = cartAdapter.calculateTotalPrice()
+        val formattedTotalPrice = String.format("Total: %.2f", totalPrice) // Format to display with two decimal places
         tvTotalPrice.text = formattedTotalPrice
     }
 
@@ -104,6 +94,7 @@ class CartFragment : Fragment() {
         AlertDialog.Builder(requireContext())
             .setTitle("Do you want to print a Receipt?")
             .setPositiveButton("Yes") { dialog, _ ->
+                sendOrderToFirebase(inventoryViewModel) // Pass inventoryViewModel to sendOrderToFirebase
                 dialog.dismiss()
             }
             .setNegativeButton("No") { dialog, _ ->
@@ -112,7 +103,8 @@ class CartFragment : Fragment() {
             .show()
     }
 
-    private fun sendOrderToFirebase() {
-        cartViewModel.sendOrderToFirebase(requireContext())
+    private fun sendOrderToFirebase(inventoryViewModel: InventoryViewModel) {
+        cartViewModel.sendOrderToFirebase(requireContext(), inventoryViewModel)
     }
+
 }

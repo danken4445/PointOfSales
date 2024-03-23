@@ -1,5 +1,6 @@
 package com.example.pointofsales
 
+import SalesReportFragment
 import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.View
@@ -10,7 +11,6 @@ import androidx.fragment.app.Fragment
 import com.example.pointofsales.fragments.CartFragment
 import com.example.pointofsales.fragments.FullHistoryFragment
 import com.example.pointofsales.R
-import com.example.pointofsales.fragments.SalesReportFragment
 import com.example.pointofsales.fragments.InventoryFragment
 import com.example.pointofsales.fragments.SalesFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -52,7 +52,7 @@ class ManagerActivity : AppCompatActivity() {
                     true
                 }
                 R.id.action_history -> {
-                    // Navigate to the FullHistoryFragment
+                    // Navigate to the com.example.pointofsales.fragments.FullHistoryFragment
                     navigateToFragment(FullHistoryFragment())
                     true
                 }

@@ -1,5 +1,6 @@
 package com.example.pointofsales.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.pointofsales.adapter.InventoryAdapter
@@ -21,12 +22,14 @@ class InventoryViewModel : ViewModel() {
                 val items = mutableListOf<InventoryItem>()
                 for (itemSnapshot in snapshot.children) {
                     val itemName = itemSnapshot.child("itemName").getValue(String::class.java) ?: ""
-                    val itemPrice= itemSnapshot.child("itemPrice").getValue(String::class.java) ?: "0.00"
-                    val quantityLong = itemSnapshot.child("itemQuantity").getValue(Int::class.java) ?: 0L
+                    val itemPrice =
+                        itemSnapshot.child("itemPrice").getValue(String::class.java) ?: "0.00"
+                    val quantityLong =
+                        itemSnapshot.child("itemQuantity").getValue(Int::class.java) ?: 0L
                     val itemQuantity = quantityLong.toInt()
 
                     // Create InventoryItem with additional imageResource (if applicable)
-                    val item = InventoryItem( itemName, itemPrice, itemQuantity)
+                    val item = InventoryItem(itemName, itemPrice, itemQuantity)
                     items.add(item)
                 }
                 inventoryItems.value = items
@@ -36,9 +39,6 @@ class InventoryViewModel : ViewModel() {
                 // Handle database error
             }
         })
-    }
-    fun updateInventoryItems(items: List<InventoryItem>) {
-        inventoryAdapter.setItems(items) // Update adapter directly
     }
 
 }

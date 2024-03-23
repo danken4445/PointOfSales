@@ -8,10 +8,12 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pointofsales.R
 import com.example.pointofsales.adapter.InventoryAdapter
+import com.example.pointofsales.decoration.GridSpacingItemDecoration
 import com.example.pointofsales.viewmodel.InventoryViewModel
 
 class InventoryFragment : Fragment() {
@@ -31,9 +33,18 @@ class InventoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        val spanCount = 3 // Number of columns in the grid
+        val spacing = resources.getDimensionPixelSize(R.dimen.grid_spacing) // Set your desired spacing dimension here
+        val includeEdge = true // Set whether to include spacing at the edges
+
+
         // Initialize RecyclerView
         inventoryRecyclerView = view.findViewById(R.id.inventoryRecyclerView)
-        inventoryRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        inventoryRecyclerView.layoutManager = GridLayoutManager(requireContext(), spanCount)
+
+        inventoryRecyclerView.addItemDecoration(GridSpacingItemDecoration(spanCount, spacing, includeEdge))
+
 
         // Initialize ViewModel
         inventoryViewModel = ViewModelProvider(this).get(InventoryViewModel::class.java)
