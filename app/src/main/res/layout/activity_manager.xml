@@ -4,40 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffff"
+    android:background="@color/PrimaryColor"
     >
 
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="420dp"
-        android:layout_height="250dp"
-        android:orientation="vertical"
+        android:layout_width="450dp"
+        android:layout_height="275dp"
         android:background="@drawable/border_background"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.26">
+        app:layout_constraintVertical_bias="0.6">
 
 
         <FrameLayout
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp"
-            android:outlineProvider="bounds" />
+            android:outlineProvider="bounds"
+            android:padding="8dp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@drawable/border_background2"
+        android:background="@drawable/border_backgroundcp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.1">
 
@@ -47,7 +46,9 @@
             android:id="@+id/fragmentContainer2"
             android:layout_width="300dp"
             android:layout_height="match_parent"
-            android:padding="8dp" />
+            android:padding="8dp">
+
+        </FrameLayout>
 
     </LinearLayout>
 
@@ -59,6 +60,7 @@
         android:layout_alignParentBottom="true"
         android:background="@color/PrimaryColor"
         android:defaultFocusHighlightEnabled="false"
+        android:foregroundGravity="center"
         app:itemActiveIndicatorStyle="@anim/spin_button"
         app:itemBackground="@color/PrimaryColor"
         app:itemIconTint="@color/white"
@@ -66,17 +68,11 @@
         app:itemTextColor="@color/white"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
         app:menu="@menu/bottom_nav_menu">
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/settingsButton"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:background="@null"
-            android:src="@drawable/settings2" />
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 

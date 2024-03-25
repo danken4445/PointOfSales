@@ -2,6 +2,7 @@ package com.example.pointofsales
 
 import SalesReportFragment
 import android.animation.ObjectAnimator
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -20,20 +21,14 @@ class ManagerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manager)
+        hideSystemUI()
+
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         val cartFragment = CartFragment()
         fragmentTransaction.replace(R.id.fragmentContainer2, cartFragment)
         fragmentTransaction.commit()
-        var settingsButton: ImageButton = findViewById(R.id.settingsButton)
 
-        val button = findViewById<ImageButton>(R.id.settingsButton)
-        settingsButton.setBackgroundColor(resources.getColor(android.R.color.transparent))
-
-        button.setOnClickListener {
-            val animation = AnimationUtils.loadAnimation(this, R.anim.spin_button)
-            it.startAnimation(animation)
-        }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setOnItemSelectedListener { item ->
@@ -49,6 +44,11 @@ class ManagerActivity : AppCompatActivity() {
                 R.id.action_sale -> {
                     // Navigate to the com.example.postest.com.example.postest.adapters.com.example.postest.fragments.com.example.pointofsales.fragments.com.example.pointofsales.fragments.SalesFragment
                     navigateToFragment(SalesFragment())
+                    true
+                }
+                R.id.action_settings -> {
+                    // Navigate to the com.example.postest.com.example.postest.adapters.com.example.postest.fragments.com.example.pointofsales.fragments.com.example.pointofsales.fragments.SalesFragment
+                    navigateToFragment(SettingsFragment())
                     true
                 }
                 R.id.action_history -> {
@@ -77,6 +77,27 @@ class ManagerActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
             .commit()
+    }
+    private fun hideSystemUI() {
+        // Enables regular immersive mode
+        // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
+        // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_IMMERSIVE
+                        // Set the content to appear under the system bars so that the
+                        // content doesn't resize when the system bars hide and show.
+                        or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        // Hide the nav bar and status bar
+                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_FULLSCREEN)
+        // If the Android version is newer than API 19, use the flag SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            window.decorView.systemUiVisibility = (
+                    window.decorView.systemUiVisibility
+                            or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+        }
     }
 
 }

@@ -124,6 +124,11 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
 
 
+    //BarChart
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+
+
 
 
 

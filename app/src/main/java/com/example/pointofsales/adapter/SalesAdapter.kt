@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pointofsales.R
 import com.example.pointofsales.data.SalesItem
@@ -39,7 +40,8 @@ class SalesAdapter(
     inner class SalesItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val itemNameTextView: TextView = itemView.findViewById(R.id.itemNameTextView)
         private val itemPriceTextView: TextView = itemView.findViewById(R.id.itemPriceTextView)
-        private val itemQuantityTextView: TextView = itemView.findViewById(R.id.itemQuantityTextView)
+        private val itemQuantityTextView: TextView =
+            itemView.findViewById(R.id.itemQuantityTextView)
         private val addToCartButton: ImageButton = itemView.findViewById(R.id.addToCartButton)
 
         fun bind(item: SalesItem) {
@@ -49,7 +51,18 @@ class SalesAdapter(
 
             // Set onClickListener for addToCartButton
             addToCartButton.setOnClickListener {
-                onAddToCartClickListener.onAddToCartClick(item)
+                // Check if the item quantity is greater than 0 before decreasing it
+                if (item.itemQuantity > 0) {
+                    // Decrease the item quantity by 1
+                    item.itemQuantity--
+                    // Update the quantity TextView
+                    itemQuantityTextView.text = "Quantity: ${item.itemQuantity}"
+                    // Trigger the add to cart click event
+                    onAddToCartClickListener.onAddToCartClick(item)
+                } else {
+                    // Notify the user that the item is out of stock
+                    Toast.makeText(context, "Item is out of stock", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

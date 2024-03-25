@@ -12,29 +12,35 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="landscape"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PointOfSales"
+        android:theme="@style/Base.Theme.PointOfSales"
         tools:targetApi="31">
 
         <activity
             android:name=".CashierActivity"
             android:exported="false"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".ManagerActivity"
             android:screenOrientation="landscape"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan"
+            >
+
+
+
+        </activity>
+        <activity
+            android:name=".LoginPageActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="landscape">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".LoginPageActivity"
-            android:exported="true"
-            android:screenOrientation="landscape">
-
         </activity>
 
         <meta-data

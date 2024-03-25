@@ -52,6 +52,8 @@ class CartFragment : Fragment() {
         cartAdapter = CartAdapter()
         cartRecyclerView.adapter = cartAdapter
 
+
+
         // Set visibility of cart empty layout
         checkCartEmpty()
 
@@ -61,6 +63,9 @@ class CartFragment : Fragment() {
         // Set onClickListener for checkout button
         buttonCheckout.setOnClickListener {
             showCheckoutConfirmationDialog()
+
+
+
         }
 
         // Initialize inventoryViewModel
@@ -72,6 +77,11 @@ class CartFragment : Fragment() {
             checkCartEmpty() // Check cart empty after updating items
             updateTotalPrice() // Update total price after cart items change
         }
+        val employeeName = activity?.intent?.getStringExtra("employeeName")
+
+        // Set the employee's name to the TextView
+        val employeeNameTextView: TextView = view.findViewById(R.id.employeeNamePlaceHolder)
+        employeeNameTextView.text = "Employee: $employeeName"
     }
 
     private fun checkCartEmpty() {

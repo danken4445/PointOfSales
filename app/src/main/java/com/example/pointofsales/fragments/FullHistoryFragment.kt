@@ -25,15 +25,17 @@ class FullHistoryFragment : Fragment(R.layout.fragment_full_history) {
         viewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
 
         recyclerView = view.findViewById(R.id.historyRecyclerView)
-        adapter = HistoryAdapter()
+
+        val employeeName = requireActivity().intent.getStringExtra("employeeName") ?: "Employee Name"
+        val historyAdapter = HistoryAdapter(employeeName)
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = adapter
+        recyclerView.adapter = historyAdapter
         recyclerView.addItemDecoration(SpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.item_spacing)))
 
-        viewModel.orders.observe(viewLifecycleOwner, { orders ->
-            adapter.submitList(orders)
-        })
+        viewModel.orders.observe(viewLifecycleOwner) { orders ->
+            historyAdapter.submitList(orders) // Use historyAdapter instead of adapter
+        }
 
         viewModel.fetchOrders()
     }

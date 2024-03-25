@@ -1,7 +1,9 @@
 package com.example.pointofsales
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -19,6 +21,7 @@ class LoginPageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_page)
+        hideSystemUI()
 
         empIdEditText = findViewById(R.id.empIdEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
@@ -45,22 +48,24 @@ class LoginPageActivity : AppCompatActivity() {
                         userSnapshot.child("password").value?.toString() // Cast to String
                     val role = userSnapshot.child("role").value?.toString() // Cast to String
 
+                    // Inside loginUser() function, after checking the user's credentials and before starting the activity
                     if (empId == empIdFromDB && password == passwordFromDB) {
                         loggedIn = true
-                        // Redirect user based on role
-                        if (role == "Manager") {
-                            startActivity(Intent(this@LoginPageActivity, ManagerActivity::class.java))
-                            finish()
-                        } else if (role == "Cashier") {
-                            startActivity(Intent(this@LoginPageActivity, CashierActivity::class.java))
-                            finish()
+                        val employeeName = userSnapshot.child("name").value?.toString() // Get employee's name
+
+                        val intent = when (role) {
+                            "Manager" -> Intent(this@LoginPageActivity, ManagerActivity::class.java)
+                            "Cashier" -> Intent(this@LoginPageActivity, CashierActivity::class.java)
+                            else -> null
                         }
-                        break
+
+                        // Pass employee's name as extra
+                        intent?.putExtra("employeeName", employeeName)
+                        startActivity(intent)
+                        finish()
                     }
-                }
-                if (!loggedIn) {
-                    Toast.makeText(this@LoginPageActivity, "Invalid credentials", Toast.LENGTH_SHORT)
-                        .show()
+
+
                 }
             }
 
@@ -73,4 +78,19 @@ class LoginPageActivity : AppCompatActivity() {
             }
         })
     }
+    private fun hideSystemUI() {
+        window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_IMMERSIVE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_FULLSCREEN)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            window.decorView.systemUiVisibility = (
+                    window.decorView.systemUiVisibility
+                            or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+        }
+    }
+
 }

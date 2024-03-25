@@ -25,4 +25,10 @@
         android:iconTint="@color/white"
         android:title="Inventory" />
 
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/settings2"
+        android:iconTint="@color/white"
+        android:title="Settings" />
+
 </menu>
