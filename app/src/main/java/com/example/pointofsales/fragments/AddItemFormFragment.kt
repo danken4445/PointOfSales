@@ -3,6 +3,7 @@ package com.example.pointofsales.fragments
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 
 class AddItemFormFragment : Fragment() {
 
@@ -26,6 +28,7 @@ class AddItemFormFragment : Fragment() {
     private lateinit var itemPriceEditText: EditText
     private lateinit var quantityEditText: EditText
     private lateinit var selectImageButton: Button
+    private var selectedImageUri: Uri? = null
     private var itemIdCounter: Int = 0
 
     private val REQUEST_CODE_GALLERY = 123
@@ -75,7 +78,7 @@ class AddItemFormFragment : Fragment() {
 
         // Set up button click listener
         addButton.setOnClickListener {
-            addItemToDatabase()
+            addItemToDatabase(selectedImageUri)
         }
     }
 
@@ -92,47 +95,71 @@ class AddItemFormFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_GALLERY && resultCode == Activity.RESULT_OK && data != null) {
             // Handle the selected image URI here
-            val selectedImageUri = data.data
+            selectedImageUri = data.data
             // You can set the selected image URI to a ImageView or process it as needed
         }
     }
-    private fun addItemToDatabase() {
-        val itemName = itemNameEditText.text.toString().trim()
-        val itemPrice = itemPriceEditText.text.toString().trim()
-        val quantity = quantityEditText.text.toString().toIntOrNull() ?: 0
-        val imageResource = selectImageButton.text.toString().trim()
+    private fun addItemToDatabase(imageUri: Uri?) {
+        // Check if an image is selected
+        if (imageUri != null) {
+            val itemName = itemNameEditText.text.toString().trim()
+            val itemPrice = itemPriceEditText.text.toString().trim()
+            val quantity = quantityEditText.text.toString().toIntOrNull() ?: 0
 
-        if (itemName.isNotEmpty() && quantity > 0 && imageResource.isNotEmpty()) {
-            // Generate unique key for the new item
-            val newItemId = itemIdCounter.toString()
 
-            // Create map with item details
-            val itemMap = mapOf(
-                "itemName" to itemName,
-                "itemQuantity" to quantity,
-                "imageResource" to imageResource,
-                "itemPrice" to itemPrice
-                // Add other item details here if needed
-            )
+            // Proceed if required fields are not empty
+            if (itemName.isNotEmpty() && quantity > 0) {
+                // Generate unique key for the new item
+                val newItemId = itemIdCounter.toString()
 
-            // Add item to the database under the generated ID
-            databaseRef.child(newItemId).setValue(itemMap)
-                .addOnSuccessListener {
-                    // Increment the item ID counter
-                    itemIdCounter++
-                    // Show confirmation dialog
-                    showConfirmationDialog()
+                // Reference to Firebase Storage
+                val storageRef = FirebaseStorage.getInstance().reference
+                // Create reference to store the image with a unique filename
+                val imageRef = storageRef.child("POSimages/$newItemId.jpg")
+
+                // Upload image to Firebase Storage
+                val uploadTask = imageRef.putFile(imageUri)
+                uploadTask.addOnSuccessListener { taskSnapshot ->
+                    // Get the URL of the uploaded image
+                    imageRef.downloadUrl.addOnSuccessListener { imageUrl ->
+                        // Create map with item details including the image URL
+                        val itemMap = mapOf(
+                            "itemName" to itemName,
+                            "itemQuantity" to quantity,
+                            "imageResource" to imageUrl.toString(), // Store image URL
+                            "itemPrice" to itemPrice
+                            // Add other item details here if needed
+                        )
+
+                        // Add item to the database under the generated ID`
+                        databaseRef.child(newItemId).setValue(itemMap)
+                            .addOnSuccessListener {
+                                // Increment the item ID counter
+                                itemIdCounter++
+                                // Show confirmation dialog
+                                showConfirmationDialog()
+                            }
+                            .addOnFailureListener {
+                                // Error occurred while adding item to database
+                                // Handle error, display message, etc.
+                                Toast.makeText(requireContext(), "Failed to add item", Toast.LENGTH_SHORT).show()
+                            }
+                    }
                 }
-                .addOnFailureListener {
-                    // Error occurred while adding item to database
-                    // Handle error, display message, etc.
-                    Toast.makeText(requireContext(), "Failed to add item", Toast.LENGTH_SHORT).show()
+                uploadTask.addOnFailureListener {
+                    // Handle image upload failure
+                    Toast.makeText(requireContext(), "Failed to upload image", Toast.LENGTH_SHORT).show()
                 }
+            } else {
+                // Show error message if any field is empty or invalid
+                Toast.makeText(requireContext(), "Please fill all fields correctly", Toast.LENGTH_SHORT).show()
+            }
         } else {
-            // Show error message if any field is empty or invalid
-            Toast.makeText(requireContext(), "Please fill all fields correctly", Toast.LENGTH_SHORT).show()
+            // Show error message if no image is selected
+            Toast.makeText(requireContext(), "Please select an image", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun showConfirmationDialog() {
         AlertDialog.Builder(requireContext())

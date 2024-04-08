@@ -1,15 +1,15 @@
 package com.example.pointofsales.viewmodel
 
+import com.example.pointofsales.adapter.InventoryAdapter
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.pointofsales.adapter.InventoryAdapter
 import com.example.pointofsales.data.InventoryItem
 import com.google.firebase.database.*
 
 class InventoryViewModel : ViewModel() {
     private lateinit var viewModel: InventoryViewModel
-    private lateinit var inventoryAdapter: InventoryAdapter // Use InventoryAdapter
+    private lateinit var inventoryAdapter: InventoryAdapter // Use com.example.pointofsales.adapter.InventoryAdapter
     private val database = FirebaseDatabase.getInstance().getReference("Items")
 
     // Define LiveData for inventory items
@@ -27,10 +27,18 @@ class InventoryViewModel : ViewModel() {
                     val quantityLong =
                         itemSnapshot.child("itemQuantity").getValue(Int::class.java) ?: 0L
                     val itemQuantity = quantityLong.toInt()
+                    val imageURL = itemSnapshot.child("imageResource").getValue(String::class.java)
+
 
                     // Create InventoryItem with additional imageResource (if applicable)
-                    val item = InventoryItem(itemName, itemPrice, itemQuantity)
-                    items.add(item)
+                    val item = imageURL?.let {
+                        InventoryItem(itemName, itemPrice, itemQuantity,
+                            it
+                        )
+                    }
+                    if (item != null) {
+                        items.add(item)
+                    }
                 }
                 inventoryItems.value = items
             }
@@ -40,5 +48,31 @@ class InventoryViewModel : ViewModel() {
             }
         })
     }
+    fun getDatabaseReference(): DatabaseReference {
+        return database
+    }
+    fun updateItemQuantity(itemId: String, newQuantity: Int) {
+        database.orderByChild("itemName").equalTo(itemId).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (itemSnapshot in snapshot.children) {
+                        val itemKey = itemSnapshot.key
+                        database.child(itemKey!!).child("itemQuantity").setValue(newQuantity)
+                            .addOnSuccessListener {
+                                Log.d("InventoryViewModel", "Item quantity updated successfully")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("InventoryViewModel", "Failed to update item quantity: ${e.message}")
+                            }
+                    }
+                }
+            }
 
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("InventoryViewModel", "Failed to retrieve item key: ${error.message}")
+            }
+        })
+    }
 }
+
+

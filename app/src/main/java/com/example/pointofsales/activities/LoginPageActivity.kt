@@ -1,4 +1,4 @@
-package com.example.pointofsales
+package com.example.pointofsales.activities
 
 import android.content.Intent
 import android.os.Build
@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.pointofsales.R
 import com.google.firebase.database.*
 
 class LoginPageActivity : AppCompatActivity() {

@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/PrimaryColor"
+    tools:context=".activities.CashierActivity"
     >
 
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="700dp"
-        android:layout_height="520dp"
+        android:layout_width="750dp"
+        android:layout_height="500dp"
         android:background="@drawable/border_background"
+        android:gravity="center"
         android:orientation="vertical"
-        android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewCashier"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5">
+        app:layout_constraintVertical_bias="0.6">
 
 
         <FrameLayout
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:outlineProvider="bounds" />
+            android:outlineProvider="bounds"
+            android:padding="8dp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@drawable/border_background2"
+        android:background="@drawable/border_backgroundcp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.">
+        app:layout_constraintVertical_bias="0.1">
 
 
         <!-- Bottom Navigation View -->
@@ -46,18 +47,21 @@
             android:id="@+id/fragmentContainer2"
             android:layout_width="300dp"
             android:layout_height="match_parent"
-            android:padding="8dp" />
+            android:padding="8dp">
+
+        </FrameLayout>
 
     </LinearLayout>
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="715dp"
-        android:layout_height="80dp"
+        android:id="@+id/bottomNavigationViewCashier"
+        android:layout_width="wrap_content"
+        android:layout_height="90dp"
         android:layout_alignParentBottom="true"
         android:background="@color/PrimaryColor"
         android:defaultFocusHighlightEnabled="false"
+        android:foregroundGravity="center"
         app:itemActiveIndicatorStyle="@anim/spin_button"
         app:itemBackground="@color/PrimaryColor"
         app:itemIconTint="@color/white"
@@ -65,11 +69,14 @@
         app:itemTextColor="@color/white"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        app:menu="@menu/bottom_nav_menu" />
+        app:menu="@menu/bottom_nav_menu_cashier">
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

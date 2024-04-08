@@ -25,9 +25,10 @@ class SalesViewModel : ViewModel() {
                     val itemName = itemSnapshot.child("itemName").getValue(String::class.java)
                     val itemPrice = itemSnapshot.child("itemPrice").getValue(String::class.java)
                     val itemQuantity = itemSnapshot.child("itemQuantity").getValue(Int::class.java)
+                    val imageURL = itemSnapshot.child("imageResource").getValue(String::class.java)
 
-                    if (itemName != null && itemPrice != null && itemQuantity != null) {
-                        val salesItem = SalesItem(itemName, itemPrice, itemQuantity)
+                    if (itemName != null && itemPrice != null && itemQuantity != null && imageURL != null) {
+                        val salesItem = SalesItem(itemName, itemPrice, itemQuantity, imageURL)
                         salesItemList.add(salesItem)
                     }
                 }
@@ -39,4 +40,5 @@ class SalesViewModel : ViewModel() {
             }
         })
     }
+
 }

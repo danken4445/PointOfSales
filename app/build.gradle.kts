@@ -62,6 +62,8 @@ dependencies {
     implementation("androidx.test:monitor:1.6.1")
     implementation("androidx.gridlayout:gridlayout:1.0.0")
     implementation("com.google.firebase:firebase-database:20.3.1")
+    implementation("androidx.preference:preference:1.2.1")
+    implementation("com.google.firebase:firebase-storage:20.3.0")
     androidTestImplementation("org.testng:testng:6.9.6")
 
     implementation("androidx.core:core-ktx:1.9.0")
@@ -126,6 +128,8 @@ dependencies {
 
     //BarChart
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    implementation ("com.squareup.picasso:picasso:2.8")
 
 
 

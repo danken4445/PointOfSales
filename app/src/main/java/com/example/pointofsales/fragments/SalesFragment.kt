@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pointofsales.R
 import com.example.pointofsales.adapter.SalesAdapter
@@ -23,6 +25,7 @@ class SalesFragment : Fragment(), SalesAdapter.OnAddToCartClickListener {
     private lateinit var salesRecyclerView: RecyclerView
     private lateinit var salesViewModel: SalesViewModel
     private lateinit var salesAdapter: SalesAdapter
+    private lateinit var searchView: SearchView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +37,14 @@ class SalesFragment : Fragment(), SalesAdapter.OnAddToCartClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Initialize RecyclerView
+        salesRecyclerView = view.findViewById(R.id.salesRecyclerView)
+        salesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        salesAdapter = SalesAdapter(requireContext(), this)
+        salesRecyclerView.adapter = salesAdapter
+
+        // Initialize ViewModel
+        salesViewModel = ViewModelProvider(this).get(SalesViewModel::class.java)
         val spanCount = 3 // Number of columns in the grid
         val spacing = resources.getDimensionPixelSize(R.dimen.grid_spacing) // Set your desired spacing dimension here
         val includeEdge = true // Set whether to include spacing at the edges
@@ -44,12 +55,19 @@ class SalesFragment : Fragment(), SalesAdapter.OnAddToCartClickListener {
 // Apply ItemDecoration
         salesRecyclerView.addItemDecoration(GridSpacingItemDecoration(spanCount, spacing, includeEdge))
 
-        // Initialize ViewModel
-        salesViewModel = ViewModelProvider(this).get(SalesViewModel::class.java)
 
-        // Initialize Adapter
-        salesAdapter = SalesAdapter(requireContext(), this) // Pass the listener
-        salesRecyclerView.adapter = salesAdapter
+        // Initialize SearchView
+        searchView = view.findViewById(R.id.searchView)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                salesAdapter.filter.filter(newText)
+                return false
+            }
+        })
 
         // Observe sales items from ViewModel
         salesViewModel.salesItems.observe(viewLifecycleOwner, Observer { items ->
@@ -63,7 +81,5 @@ class SalesFragment : Fragment(), SalesAdapter.OnAddToCartClickListener {
     override fun onAddToCartClick(item: SalesItem) {
         // Handle adding item to cart here
         cartViewModel.addItemToCart(item)
-        val itemName = item.itemName
-        Toast.makeText(requireContext(), "$itemName added to cart", Toast.LENGTH_SHORT).show()
     }
 }

@@ -16,31 +16,34 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".CashierActivity"
+            android:name=".activities.CashierActivity"
             android:exported="false"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".ManagerActivity"
+            android:name=".activities.ManagerActivity"
             android:screenOrientation="landscape"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"
-            >
+            android:windowSoftInputMode="adjustPan">
+
+
 
 
 
         </activity>
         <activity
-            android:name=".LoginPageActivity"
+            android:name=".activities.LoginPageActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="landscape">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
+
         </activity>
 
         <meta-data

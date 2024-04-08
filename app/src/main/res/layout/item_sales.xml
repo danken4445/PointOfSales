@@ -2,11 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="190dp"
     android:layout_height="300dp"
     android:background="@drawable/border_background3"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="8dp">
 
     <!-- Item Image Preview -->
 
@@ -15,17 +15,16 @@
         android:id="@+id/addToCartButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="78dp"
         android:background="@drawable/border_backgroundaddtocart"
         android:clickable="true"
         android:scaleType="centerCrop"
         android:src="@drawable/add2cart"
-        app:layout_constraintBottom_toTopOf="@+id/itemNameTextView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.984" />
 
     <ImageView
         android:id="@+id/itemImageView"
@@ -36,7 +35,8 @@
         app:layout_constraintBottom_toTopOf="@+id/itemNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"/>
 
     <!-- Item Name -->
 

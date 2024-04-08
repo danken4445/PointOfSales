@@ -1,0 +1,38 @@
+<!-- item_product.xml -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/border_background_history">
+
+    <TextView
+        android:id="@+id/textViewItemName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:padding="8dp"
+        android:text="Product Name" />
+
+    <TextView
+        android:id="@+id/textViewItemPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:textColor="@color/black"
+        android:text="Price: $0.00" />
+
+    <TextView
+        android:id="@+id/textViewItemQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:textColor="@color/black"
+        android:text="Quantity: 0" />
+
+</LinearLayout>

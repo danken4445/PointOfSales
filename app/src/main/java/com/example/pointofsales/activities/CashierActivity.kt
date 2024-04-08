@@ -1,28 +1,27 @@
-package com.example.pointofsales
+package com.example.pointofsales.activities
 
-import SalesReportFragment
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.ImageButton
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.pointofsales.fragments.CartFragment
-import com.example.pointofsales.fragments.FullHistoryFragment
 import com.example.pointofsales.R
-import com.example.pointofsales.fragments.InventoryFragment
+import com.example.pointofsales.fragments.CartFragment
+import com.example.pointofsales.fragments.CashierSettingsFragment
+import com.example.pointofsales.fragments.FullHistoryFragment
 import com.example.pointofsales.fragments.SalesFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class ManagerActivity : AppCompatActivity() {
+class CashierActivity : AppCompatActivity() {
+    private lateinit var logoutButton: ImageButton // Assuming you have a Button for logout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_manager)
+        setContentView(R.layout.activity_cashier)
         hideSystemUI()
-
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         val cartFragment = CartFragment()
@@ -30,40 +29,33 @@ class ManagerActivity : AppCompatActivity() {
         fragmentTransaction.commit()
 
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationViewCashier)
         bottomNavigationView.setOnItemSelectedListener { item ->
             // Animate the selected item
             animateSpin(bottomNavigationView.findViewById(item.itemId))
 
             when (item.itemId) {
-                R.id.action_salesReport -> {
-                    // Navigate to the SalesReportFragment
-                    navigateToFragment(SalesReportFragment())
-                    true
-                }
+
                 R.id.action_sale -> {
                     // Navigate to the com.example.postest.com.example.postest.adapters.com.example.postest.fragments.com.example.pointofsales.fragments.com.example.pointofsales.fragments.SalesFragment
                     navigateToFragment(SalesFragment())
                     true
                 }
+                R.id.action_logout -> {
+                    // Navigate to the com.example.postest.com.example.postest.adapters.com.example.postest.fragments.com.example.pointofsales.fragments.com.example.pointofsales.fragments.SalesFragment
+                    logoutUser()
+                    true
+                }
                 R.id.action_settings -> {
                     // Navigate to the com.example.postest.com.example.postest.adapters.com.example.postest.fragments.com.example.pointofsales.fragments.com.example.pointofsales.fragments.SalesFragment
-                    navigateToFragment(SettingsFragment())
-                    true
-                }
-                R.id.action_history -> {
-                    // Navigate to the com.example.pointofsales.fragments.FullHistoryFragment
-                    navigateToFragment(FullHistoryFragment())
-                    true
-                }
-                R.id.action_inventory -> {
-                    // Navigate to the com.example.postest.com.example.postest.com.example.postest.fragments.com.example.pointofsales.fragments.com.example.pointofsales.fragments.InventoryFragment
-                    navigateToFragment(InventoryFragment())
+                    navigateToFragment(CashierSettingsFragment())
                     true
                 }
                 else -> false
             }
         }
+
+
     }
 
     private fun animateSpin(view: View) {
@@ -78,6 +70,7 @@ class ManagerActivity : AppCompatActivity() {
             .replace(R.id.fragmentContainer, fragment)
             .commit()
     }
+
     private fun hideSystemUI() {
         // Enables regular immersive mode
         // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
@@ -99,5 +92,13 @@ class ManagerActivity : AppCompatActivity() {
                             or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
         }
     }
+    private fun logoutUser() {
+        // Clear any saved user session or authentication state
+        // For example, clear SharedPreferences or Firebase Authentication session
 
+        // After clearing session, navigate back to login activity
+        val intent = Intent(this, LoginPageActivity::class.java)
+        startActivity(intent)
+        finish() // Finish the current activity to prevent user from returning using back button
+    }
 }

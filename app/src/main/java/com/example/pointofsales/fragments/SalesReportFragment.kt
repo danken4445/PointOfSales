@@ -1,3 +1,5 @@
+package com.example.pointofsales.fragments
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,14 +9,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.pointofsales.R
 import com.example.pointofsales.viewmodel.SalesReportViewModel
-import java.text.SimpleDateFormat
-import java.util.*
+
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 
 class SalesReportFragment : Fragment() {
 
-    private lateinit var viewModel: SalesReportViewModel
-    private lateinit var monthlyIncomeTextView: TextView
-    private lateinit var weeklyIncomeTextView: TextView
+    private lateinit var barChart: BarChart
+    private lateinit var salesReportViewModel: SalesReportViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,18 +32,51 @@ class SalesReportFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this).get(SalesReportViewModel::class.java)
+        barChart = view.findViewById(R.id.barChart)
 
-        monthlyIncomeTextView = view.findViewById(R.id.textViewMonthlyIncome)
-        weeklyIncomeTextView = view.findViewById(R.id.textViewWeeklyIncome)
+        // Initialize ViewModel
+        salesReportViewModel = ViewModelProvider(this).get(SalesReportViewModel::class.java)
 
-        viewModel.monthlyIncome.observe(viewLifecycleOwner) { monthlyIncome ->
-            monthlyIncomeTextView.text = ("Monthly Income: " + monthlyIncome)
+        // Observe monthly income data
+        salesReportViewModel.monthlyIncome.observe(viewLifecycleOwner) { monthlyIncomeMap ->
+            updateBarChart(monthlyIncomeMap)
         }
 
-        viewModel.weeklyIncome.observe(viewLifecycleOwner) { weeklyIncome ->
-            weeklyIncomeTextView.text = ("Weekly Income" + weeklyIncome)
+        // Set up bar chart
+        setUpBarChart()
+    }
+
+    private fun setUpBarChart() {
+        // Customize bar chart appearance
+        val xAxis = barChart.xAxis
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.setDrawGridLines(false)
+        xAxis.valueFormatter = IndexAxisValueFormatter(months) // Provide month labels
+        xAxis.granularity = 1f // Set interval to 1 (one bar per month)
+
+        barChart.axisRight.isEnabled = false // Disable right axis
+        barChart.description.isEnabled = false // Disable description
+        barChart.legend.isEnabled = false // Disable legend
+        barChart.setFitBars(true) // Set bars to fit screen width
+    }
+
+    private fun updateBarChart(monthlyIncomeMap: Map<String, Double>) {
+        val entries = mutableListOf<BarEntry>()
+        months.forEachIndexed { index, month ->
+            val income = monthlyIncomeMap[month] ?: 0.0
+            entries.add(BarEntry(index.toFloat(), income.toFloat()))
         }
 
+        val dataSet = BarDataSet(entries, "Monthly Income")
+
+        val data = BarData(dataSet)
+        barChart.data = data
+
+        barChart.invalidate() // Refresh chart
+    }
+
+    companion object {
+        private val months = arrayOf("Jan", "Feb", "Mar", "Apr", "May") // Months labels
     }
 }
+

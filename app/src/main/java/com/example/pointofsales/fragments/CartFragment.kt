@@ -48,11 +48,9 @@ class CartFragment : Fragment() {
         // Initialize RecyclerView
         cartRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // Initialize Adapter
-        cartAdapter = CartAdapter()
+        // Initialize Adapter with CartViewModel instance
+        cartAdapter = CartAdapter(requireContext(), cartViewModel) // Pass the correct context
         cartRecyclerView.adapter = cartAdapter
-
-
 
         // Set visibility of cart empty layout
         checkCartEmpty()
@@ -63,9 +61,6 @@ class CartFragment : Fragment() {
         // Set onClickListener for checkout button
         buttonCheckout.setOnClickListener {
             showCheckoutConfirmationDialog()
-
-
-
         }
 
         // Initialize inventoryViewModel
@@ -77,6 +72,7 @@ class CartFragment : Fragment() {
             checkCartEmpty() // Check cart empty after updating items
             updateTotalPrice() // Update total price after cart items change
         }
+
         val employeeName = activity?.intent?.getStringExtra("employeeName")
 
         // Set the employee's name to the TextView
@@ -102,7 +98,7 @@ class CartFragment : Fragment() {
 
     private fun showCheckoutConfirmationDialog() {
         AlertDialog.Builder(requireContext())
-            .setTitle("Do you want to print a Receipt?")
+            .setTitle("Confirm Order?")
             .setPositiveButton("Yes") { dialog, _ ->
                 sendOrderToFirebase(inventoryViewModel) // Pass inventoryViewModel to sendOrderToFirebase
                 dialog.dismiss()

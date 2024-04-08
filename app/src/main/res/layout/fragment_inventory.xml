@@ -27,7 +27,7 @@
 
     </androidx.appcompat.widget.AppCompatButton>
 
-    <SearchView
+    <android.widget.SearchView
         android:id="@+id/searchView2"
         style="@style/ShapeAppearanceOverlay.Material3.SearchBar"
         android:layout_width="275dp"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
-    </SearchView>
+    </android.widget.SearchView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/inventoryRecyclerView"
