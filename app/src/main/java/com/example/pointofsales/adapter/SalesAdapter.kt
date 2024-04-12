@@ -15,6 +15,8 @@ import com.example.pointofsales.R
 import com.example.pointofsales.data.SalesItem
 import com.squareup.picasso.Picasso
 import java.util.Locale
+import java.text.NumberFormat
+
 
 class SalesAdapter(
     private val context: Context,
@@ -69,6 +71,7 @@ class SalesAdapter(
             }
         }
     }
+
     inner class SalesItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val itemNameTextView: TextView = itemView.findViewById(R.id.itemNameTextView)
         private val itemPriceTextView: TextView = itemView.findViewById(R.id.itemPriceTextView)
@@ -76,9 +79,16 @@ class SalesAdapter(
         private val itemImageView: ImageView = itemView.findViewById(R.id.itemImageView)
         private val addToCartButton: ImageButton = itemView.findViewById(R.id.addToCartButton)
 
+        private val currencyFormat = NumberFormat.getCurrencyInstance(Locale("en", "PH"))
+
         fun bind(item: SalesItem) {
             itemNameTextView.text = item.itemName
-            itemPriceTextView.text = "Price: ₱${item.itemPrice}"
+
+            // Convert item price to Double and format as currency
+            val itemPrice = item.itemPrice.toDoubleOrNull() ?: 0.0
+            val formattedPrice = currencyFormat.format(itemPrice)
+            itemPriceTextView.text = "Price: $formattedPrice"
+
             itemQuantityTextView.text = "Quantity: ${item.itemQuantity}"
             Picasso.get().load(item.imageURL)
                 .placeholder(R.drawable.logo1)
@@ -99,7 +109,6 @@ class SalesAdapter(
             }
         }
     }
-
 
     interface OnAddToCartClickListener {
         fun onAddToCartClick(item: SalesItem)

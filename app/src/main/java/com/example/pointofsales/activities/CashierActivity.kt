@@ -12,6 +12,7 @@ import com.example.pointofsales.R
 import com.example.pointofsales.fragments.CartFragment
 import com.example.pointofsales.fragments.CashierSettingsFragment
 import com.example.pointofsales.fragments.FullHistoryFragment
+import com.example.pointofsales.fragments.RecentHistoryFragment
 import com.example.pointofsales.fragments.SalesFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -46,9 +47,9 @@ class CashierActivity : AppCompatActivity() {
                     logoutUser()
                     true
                 }
-                R.id.action_settings -> {
+                R.id.action_recent_history -> {
                     // Navigate to the com.example.postest.com.example.postest.adapters.com.example.postest.fragments.com.example.pointofsales.fragments.com.example.pointofsales.fragments.SalesFragment
-                    navigateToFragment(CashierSettingsFragment())
+                    navigateToFragment(RecentHistoryFragment())
                     true
                 }
                 else -> false

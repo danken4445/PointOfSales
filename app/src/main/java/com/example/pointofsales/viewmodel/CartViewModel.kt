@@ -29,6 +29,13 @@ class CartViewModel : ViewModel() {
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val ordersRef: DatabaseReference = database.getReference("POSorders")
     private val itemsRef: DatabaseReference = database.getReference("Items")
+    private val orderCounterRef: DatabaseReference = database.getReference("OrderCounter")
+
+    init {
+        // Initialize order ID counter on first run
+        getOrderIdCounter()
+    }
+
 
     // Function to clear the cart
     fun clearCart() {
@@ -37,8 +44,11 @@ class CartViewModel : ViewModel() {
 
     // Function to get the next order ID
     fun getNextOrderId(): Int {
-        return orderIdCounter++
+        val orderId = orderIdCounter
+        incrementOrderIdCounter()
+        return orderId
     }
+
 
     // Function to calculate total price
     fun calculateTotalPrice(): Double {
@@ -114,7 +124,7 @@ class CartViewModel : ViewModel() {
 
 
     // Function to send order to Firebase
-    fun sendOrderToFirebase(context: Context, inventoryViewModel: InventoryViewModel) {
+    fun sendOrderToFirebase(context: Context, inventoryViewModel: InventoryViewModel, paymentMethod: String, referenceNumber: String) {
         // Get current date and time
         val currentDateTime = Calendar.getInstance().time
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
@@ -134,6 +144,8 @@ class CartViewModel : ViewModel() {
         orderMap["orderID"] = orderId
         orderMap["dateAndTime"] = dateTimeString
         orderMap["totalPrice"] = totalPrice
+        orderMap["paymentMethod"] = paymentMethod
+        orderMap["referenceNumber"] = referenceNumber
 
         // Prepare Products node
         val productsMap = HashMap<String, Any>()
@@ -190,6 +202,7 @@ class CartViewModel : ViewModel() {
                 Toast.makeText(context, "Failed to place order", Toast.LENGTH_SHORT).show()
             }
     }
+
     fun updateQuantity(item: CartItem, newQuantity: Int) {
         val currentItems = _cartItems.value.orEmpty().toMutableList()
         val existingItem = currentItems.find { it.itemName == item.itemName }
@@ -260,4 +273,37 @@ class CartViewModel : ViewModel() {
                 }
             })
     }
+    // Function to get the order ID counter from the database
+    private fun getOrderIdCounter() {
+        orderCounterRef.child("orderIdCounter").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                orderIdCounter = snapshot.getValue(Int::class.java) ?: 0
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("CartViewModel", "Failed to retrieve order ID counter: ${error.message}")
+            }
+        })
+    }
+
+    // Function to set the order ID counter in the database
+    private fun setOrderIdCounter(counter: Int) {
+        orderCounterRef.child("orderIdCounter").setValue(counter)
+            .addOnSuccessListener {
+                orderIdCounter = counter
+            }
+            .addOnFailureListener { e ->
+                Log.e("CartViewModel", "Failed to set order ID counter: ${e.message}")
+            }
+    }
+
+    // Function to increment the order ID counter in the database
+    private fun incrementOrderIdCounter() {
+        orderIdCounter++
+        setOrderIdCounter(orderIdCounter)
+    }
 }
+
+
+
+

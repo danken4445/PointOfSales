@@ -47,7 +47,7 @@ class SalesFragment : Fragment(), SalesAdapter.OnAddToCartClickListener {
         salesViewModel = ViewModelProvider(this).get(SalesViewModel::class.java)
         val spanCount = 3 // Number of columns in the grid
         val spacing = resources.getDimensionPixelSize(R.dimen.grid_spacing) // Set your desired spacing dimension here
-        val includeEdge = true // Set whether to include spacing at the edges
+        val includeEdge = false // Set whether to include spacing at the edges
 
         salesRecyclerView = view.findViewById(R.id.salesRecyclerView)
         salesRecyclerView.layoutManager = GridLayoutManager(requireContext(), spanCount)

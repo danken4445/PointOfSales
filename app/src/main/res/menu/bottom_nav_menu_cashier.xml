@@ -2,8 +2,8 @@
     >
 
     <item
-        android:id="@+id/action_history"
-        android:title="History"
+        android:id="@+id/action_recent_history"
+        android:title="Recent History"
         android:icon="@drawable/orders"
         android:iconTint="@color/white"
         />

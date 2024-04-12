@@ -20,6 +20,7 @@ import com.example.pointofsales.data.InventoryItem
 import com.example.pointofsales.viewmodel.InventoryViewModel
 import com.squareup.picasso.Picasso
 import java.util.Locale
+import java.text.NumberFormat
 
 class InventoryAdapter(
     private val context: Context,
@@ -36,19 +37,19 @@ class InventoryAdapter(
     }
 
     override fun onBindViewHolder(holder: InventoryItemViewHolder, position: Int) {
-        val currentItem = items[position]
+        val currentItem = filteredItems[position] // Use filteredItems here
         holder.bind(currentItem)
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return filteredItems.size // Use filteredItems size here
     }
 
     fun setItems(items: List<InventoryItem>) {
         this.items = items
+        this.filteredItems = items
         notifyDataSetChanged()
     }
-
     inner class InventoryItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val itemNameTextView: TextView = itemView.findViewById(R.id.itemNameTextView)
         private val itemPriceTextView: TextView = itemView.findViewById(R.id.itemPriceTextView)
@@ -59,6 +60,9 @@ class InventoryAdapter(
         private val increaseQuantityButton: ImageButton =
             itemView.findViewById(R.id.increaseQuantityButton)
         private val itemImageView: ImageView = itemView.findViewById(R.id.itemImageView)
+        private val deleteButton: ImageButton = itemView.findViewById(R.id.deleteButton) // Assuming you have a deleteButton in your layout
+
+        private val currencyFormat = NumberFormat.getCurrencyInstance(Locale("en", "PH"))
 
         init {
             // Set onClickListener for itemQuantityTextView to show quantity input dialog
@@ -70,7 +74,12 @@ class InventoryAdapter(
 
         fun bind(item: InventoryItem) {
             itemNameTextView.text = "${item.itemName}"
-            itemPriceTextView.text = "Price: ₱${item.itemPrice}"
+
+            // Convert item price to Double and format as currency
+            val itemPrice = item.itemPrice.toDoubleOrNull() ?: 0.0
+            val formattedPrice = currencyFormat.format(itemPrice)
+            itemPriceTextView.text = "Price: $formattedPrice"
+
             itemQuantityTextView.text = "Quantity: ${item.itemQuantity}"
 
             Picasso.get().load(item.imageURL)
@@ -83,6 +92,11 @@ class InventoryAdapter(
             decreaseQuantityButton.setOnClickListener {
                 decreaseQuantity(item)
             }
+            deleteButton.setOnClickListener {
+                val item = items[adapterPosition]
+                inventoryViewModel.deleteItem(item.itemName) // Call ViewModel function to delete
+            }
+
 
             // Increase quantity button click listener
             increaseQuantityButton.setOnClickListener {
@@ -102,6 +116,10 @@ class InventoryAdapter(
         private fun increaseQuantity(item: InventoryItem) {
             val newQuantity = item.itemQuantity + 1
             inventoryViewModel.updateItemQuantity(item.itemName, newQuantity)
+        }
+        // Function to delete item
+        fun deleteItem(itemName: String) {
+            inventoryViewModel.deleteItem(itemName)
         }
 
         private fun showQuantityInputDialog(item: InventoryItem) {
@@ -158,9 +176,4 @@ class InventoryAdapter(
             }
         }
     }
-
-
-
 }
-
-

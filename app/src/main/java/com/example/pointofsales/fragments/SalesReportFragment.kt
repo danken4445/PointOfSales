@@ -1,5 +1,6 @@
 package com.example.pointofsales.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,9 @@ class SalesReportFragment : Fragment() {
 
     private lateinit var barChart: BarChart
     private lateinit var salesReportViewModel: SalesReportViewModel
+    private lateinit var textViewWeekSales: TextView
+    private lateinit var textViewMonthSales: TextView
+    private lateinit var textViewYearSales: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,10 +33,14 @@ class SalesReportFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_sales_report, container, false)
     }
 
+    @SuppressLint("StringFormatMatches")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         barChart = view.findViewById(R.id.barChart)
+        textViewWeekSales = view.findViewById(R.id.textViewWeekSales)
+        textViewMonthSales = view.findViewById(R.id.textViewMonthSales)
+        textViewYearSales = view.findViewById(R.id.textViewYearSales)
 
         // Initialize ViewModel
         salesReportViewModel = ViewModelProvider(this).get(SalesReportViewModel::class.java)
@@ -42,36 +50,58 @@ class SalesReportFragment : Fragment() {
             updateBarChart(monthlyIncomeMap)
         }
 
+        // Fetch and display weekly, monthly, and yearly sales
+        salesReportViewModel.fetchWeeklySales().observe(viewLifecycleOwner) { weeklySales ->
+            textViewWeekSales.text = getString(R.string.current_week_sales, weeklySales)
+        }
+
+        salesReportViewModel.fetchMonthlySales().observe(viewLifecycleOwner) { monthlySales ->
+            textViewMonthSales.text = getString(R.string.current_month_sales, monthlySales)
+        }
+
+        salesReportViewModel.fetchYearlySales().observe(viewLifecycleOwner) { yearlySales ->
+            textViewYearSales.text = getString(R.string.current_year_sales, yearlySales)
+        }
+
+        // Fetch monthly income data
+        salesReportViewModel.fetchMonthlyIncome()
+
         // Set up bar chart
         setUpBarChart()
     }
+
 
     private fun setUpBarChart() {
         // Customize bar chart appearance
         val xAxis = barChart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.setDrawGridLines(false)
+        xAxis.setDrawGridLines(true)
         xAxis.valueFormatter = IndexAxisValueFormatter(months) // Provide month labels
         xAxis.granularity = 1f // Set interval to 1 (one bar per month)
 
-        barChart.axisRight.isEnabled = false // Disable right axis
+        barChart.axisRight.isEnabled = true // Disable right axis
         barChart.description.isEnabled = false // Disable description
         barChart.legend.isEnabled = false // Disable legend
         barChart.setFitBars(true) // Set bars to fit screen width
     }
 
     private fun updateBarChart(monthlyIncomeMap: Map<String, Double>) {
+        val barData = BarData()
         val entries = mutableListOf<BarEntry>()
-        months.forEachIndexed { index, month ->
-            val income = monthlyIncomeMap[month] ?: 0.0
-            entries.add(BarEntry(index.toFloat(), income.toFloat()))
+        val monthLabels = mutableListOf<String>() // Store month labels for x-axis
+        var index = 0
+
+        // Iterate through monthly income map
+        for ((month, totalPrice) in monthlyIncomeMap) {
+            entries.add(BarEntry(index.toFloat(), totalPrice.toFloat()))
+            monthLabels.add(month) // Add month label for x-axis
+            index++
         }
 
-        val dataSet = BarDataSet(entries, "Monthly Income")
-
-        val data = BarData(dataSet)
-        barChart.data = data
-
+        val dataSet = BarDataSet(entries, "Monthly Sales")
+        barData.addDataSet(dataSet)
+        barChart.xAxis.valueFormatter = IndexAxisValueFormatter(monthLabels.toTypedArray()) // Set x-axis labels
+        barChart.data = barData
         barChart.invalidate() // Refresh chart
     }
 
@@ -79,4 +109,3 @@ class SalesReportFragment : Fragment() {
         private val months = arrayOf("Jan", "Feb", "Mar", "Apr", "May") // Months labels
     }
 }
-

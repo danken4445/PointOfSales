@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:hint="Employee ID"
-        android:inputType="text" />
+        android:inputType="number" />
 
     <EditText
         android:id="@+id/nameEditText"

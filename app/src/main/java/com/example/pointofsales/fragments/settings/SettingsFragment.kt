@@ -15,8 +15,6 @@ import com.example.pointofsales.fragments.AddItemFormFragment
 class SettingsFragment : Fragment() {
 
     private lateinit var createAccountCard: CardView
-    private lateinit var changePasswordCard: CardView
-    private lateinit var deleteAccountCard: CardView
     private lateinit var logoutSettingsCard: CardView
 
 
@@ -32,8 +30,6 @@ class SettingsFragment : Fragment() {
 
         // Initialize CardViews
         createAccountCard = view.findViewById(R.id.createAccount)
-        changePasswordCard = view.findViewById(R.id.changePassword)
-        deleteAccountCard = view.findViewById(R.id.deleteAccountButton)
         logoutSettingsCard = view.findViewById(R.id.logoutSettingsButton)
 
 
@@ -43,15 +39,7 @@ class SettingsFragment : Fragment() {
             createEmployeeAccount()
         }
 
-        changePasswordCard.setOnClickListener {
-            // Handle change password action
-            changePassword()
-        }
 
-        deleteAccountCard.setOnClickListener {
-            // Handle delete account action
-            deleteEmployeeAccount()
-        }
         logoutSettingsCard.setOnClickListener {
             // Navigate back to the login page
             val intent = Intent(requireContext(), LoginPageActivity::class.java)
@@ -65,15 +53,6 @@ class SettingsFragment : Fragment() {
         // For example, navigate to create account screen
     }
 
-    private fun changePassword() {
-        // Implement change password functionality here
-        // For example, navigate to change password screen
-    }
-
-    private fun deleteEmployeeAccount() {
-        // Implement delete account functionality here
-        // For example, show confirmation dialog and delete account
-    }
     private fun replaceWithCreateAccountFormFragment() {
         val fragmentTransaction = requireFragmentManager().beginTransaction()
         fragmentTransaction.replace(

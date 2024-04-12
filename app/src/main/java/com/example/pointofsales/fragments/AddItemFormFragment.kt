@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.pointofsales.R
@@ -27,6 +28,8 @@ class AddItemFormFragment : Fragment() {
     private lateinit var itemNameEditText: EditText
     private lateinit var itemPriceEditText: EditText
     private lateinit var quantityEditText: EditText
+    private lateinit var uploadProgressBar: ProgressBar
+
     private lateinit var selectImageButton: Button
     private var selectedImageUri: Uri? = null
     private var itemIdCounter: Int = 0
@@ -52,6 +55,8 @@ class AddItemFormFragment : Fragment() {
         itemPriceEditText = view.findViewById(R.id.itemPriceEditText)
         quantityEditText = view.findViewById(R.id.quantityEditText)
         selectImageButton = view.findViewById(R.id.selectImageButton)
+        uploadProgressBar = view.findViewById(R.id.uploadProgressBar)
+
         val addButton = view.findViewById<Button>(R.id.addButton)
 
 
@@ -78,6 +83,7 @@ class AddItemFormFragment : Fragment() {
 
         // Set up button click listener
         addButton.setOnClickListener {
+            uploadProgressBar.visibility = View.VISIBLE
             addItemToDatabase(selectedImageUri)
         }
     }
@@ -119,6 +125,7 @@ class AddItemFormFragment : Fragment() {
 
                 // Upload image to Firebase Storage
                 val uploadTask = imageRef.putFile(imageUri)
+                uploadProgressBar.visibility = View.GONE
                 uploadTask.addOnSuccessListener { taskSnapshot ->
                     // Get the URL of the uploaded image
                     imageRef.downloadUrl.addOnSuccessListener { imageUrl ->

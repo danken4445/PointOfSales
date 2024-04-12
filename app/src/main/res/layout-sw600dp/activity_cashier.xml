@@ -11,8 +11,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="750dp"
-        android:layout_height="500dp"
+        android:layout_width="700dp"
+        android:layout_height="520dp"
         android:background="@drawable/border_background"
         android:gravity="center"
         android:orientation="vertical"
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:outlineProvider="bounds"
-            android:padding="8dp" />
+             />
     </LinearLayout>
 
     <LinearLayout

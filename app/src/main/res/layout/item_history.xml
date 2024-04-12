@@ -29,6 +29,21 @@
         android:text="Date &amp; Time:" />
 
     <TextView
+        android:id="@+id/textViewPaymentMethod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="Payment Method: " />
+
+    <TextView
+        android:id="@+id/textViewReferenceNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="Reference Number: " />
+
+
+    <TextView
         android:id="@+id/textViewTotalPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

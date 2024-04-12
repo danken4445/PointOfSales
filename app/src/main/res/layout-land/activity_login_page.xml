@@ -48,6 +48,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/black"
         android:hint="Enter Employee ID"
+        android:textColor="@color/black"
         android:inputType="number"
         android:textColorHint="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/passwordEditText"
@@ -65,6 +66,7 @@
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/black"
         android:hint="Enter Password"
+        android:textColor="@color/black"
         android:inputType="textPassword"
         android:textColorHint="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/loginButton"
@@ -83,23 +85,11 @@
         android:padding="16dp"
         android:text="Log in"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/forgotPasswordTextView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditText"
         app:layout_constraintWidth_default="spread" />
 
-    <TextView
-        android:id="@+id/forgotPasswordTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Forgot Password"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

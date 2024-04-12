@@ -1,6 +1,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="32dp"
+    >
+
 
 
 
@@ -9,23 +13,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_gravity="center"
+    android:padding="8dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Item Form"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        android:layout_marginBottom="32dp">
+    </TextView>
+
 
 
     <EditText
         android:id="@+id/itemNameEditText"
-        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
+        android:textColorHint="@color/black"
         android:hint="Item Name"/>
 
     <EditText
         android:id="@+id/itemPriceEditText"
-        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
+        android:textColorHint="@color/black"
+
         android:hint="Item Price"/>
 
 
@@ -33,10 +50,11 @@
 
     <EditText
         android:id="@+id/quantityEditText"
-        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
+        android:textColorHint="@color/black"
+
         android:hint="Item Quantity"/>
 
 
@@ -48,6 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select Image"
+        android:textColor="@color/black"
         android:onClick="selectImageFromGallery" />
 
 
@@ -58,7 +77,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:text="Add Item" />
+        android:text="Add Item"
+        android:background="@color/PrimaryColor"/>
+    <ProgressBar
+        android:id="@+id/uploadProgressBar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        />
+
 
 </LinearLayout>
+
 </ScrollView>

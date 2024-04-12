@@ -33,7 +33,11 @@ class HistoryViewModel : ViewModel() {
                 for (orderSnapshot in snapshot.children) {
                     val orderId = orderSnapshot.child("orderID").getValue(Long::class.java) ?: 0L
                     val dateTime = orderSnapshot.child("dateAndTime").getValue(String::class.java) ?: ""
-                    val orderTotalPrice = orderSnapshot.child("totalPrice").getValue(Double::class.java) ?: 0.00
+                    val orderTotalPrice = orderSnapshot.child("totalPrice").getValue(Double::class.java) ?: 0.0
+                    val paymentMethod = orderSnapshot.child("paymentMethod").getValue(String::class.java) ?: ""
+                    val referenceNo = orderSnapshot.child("referenceNumber").getValue(String::class.java) ?: ""
+
+
 
                     // Accumulate total price
                     totalPrice += orderTotalPrice
@@ -50,7 +54,7 @@ class HistoryViewModel : ViewModel() {
                         productsList.add(product)
                     }
 
-                    val order = OrderItems(orderId, dateTime, orderTotalPrice, productsList)
+                    val order = OrderItems(orderId, dateTime, orderTotalPrice, paymentMethod, referenceNo, productsList)
                     ordersList.add(order)
                 }
 

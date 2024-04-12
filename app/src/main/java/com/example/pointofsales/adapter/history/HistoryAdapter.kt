@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pointofsales.R
 import com.example.pointofsales.data.OrderItems
+import java.text.NumberFormat
+import java.util.Locale
 
 class HistoryAdapter(private val employeeName: String) : ListAdapter<OrderItems, HistoryAdapter.HistoryViewHolder>(DiffCallback) {
 
@@ -29,15 +31,23 @@ class HistoryAdapter(private val employeeName: String) : ListAdapter<OrderItems,
         private val dateTimeTextView: TextView = itemView.findViewById(R.id.textViewDateTime)
         private val totalPriceTextView: TextView = itemView.findViewById(R.id.textViewTotalPrice)
         private val productsRecyclerView: RecyclerView = itemView.findViewById(R.id.recyclerViewProducts)
-        private val empNameHistoryTextView: TextView = itemView.findViewById(R.id.empNameHistory) // Added
+        private val empNameHistoryTextView: TextView = itemView.findViewById(R.id.empNameHistory)
+        private val paymentMethodTextView: TextView = itemView.findViewById(R.id.textViewPaymentMethod)
+        private val referenceNo: TextView = itemView.findViewById(R.id.textViewReferenceNumber)
 
+        private val currencyFormat = NumberFormat.getCurrencyInstance(Locale("en", "PH"))
 
         fun bind(order: OrderItems) {
             orderIdTextView.text = Html.fromHtml("Order ID: <b>${order.orderId}</b>")
             dateTimeTextView.text = Html.fromHtml("Date & Time: <b>${order.dateTime}</b>")
-            totalPriceTextView.text = Html.fromHtml("Total Price: <b>₱${order.totalPrice}0</b>")
-            empNameHistoryTextView.text = Html.fromHtml("Employee: <b>$employeeName</b>") // Set employee name
 
+            // Format total price as currency
+            val formattedPrice = currencyFormat.format(order.totalPrice)
+            totalPriceTextView.text = Html.fromHtml("Total Price: <b>$formattedPrice</b>")
+
+            empNameHistoryTextView.text = Html.fromHtml("Employee: <b>$employeeName</b>") // Set employee name
+            paymentMethodTextView.text = Html.fromHtml("Payment Method: <b>${order.paymentMethod}</b>")
+            referenceNo.text = Html.fromHtml("Reference Number: <b>${order.referenceNumber}</b>") // Set employee name
 
             val productsAdapter = ProductsAdapter()
             productsRecyclerView.layoutManager = LinearLayoutManager(itemView.context)
@@ -45,6 +55,7 @@ class HistoryAdapter(private val employeeName: String) : ListAdapter<OrderItems,
             productsAdapter.submitList(order.products)
         }
     }
+
 
     object DiffCallback : DiffUtil.ItemCallback<OrderItems>() {
         override fun areItemsTheSame(oldItem: OrderItems, newItem: OrderItems): Boolean {

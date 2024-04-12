@@ -12,7 +12,7 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Transaction History"
+        android:text="Full Transaction History"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="12sp"

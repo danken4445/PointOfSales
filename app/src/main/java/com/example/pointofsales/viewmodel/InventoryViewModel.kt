@@ -73,6 +73,35 @@ class InventoryViewModel : ViewModel() {
             }
         })
     }
+    // Function to delete item
+    fun deleteItem(itemName: String) {
+        database.orderByChild("itemName").equalTo(itemName)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        for (itemSnapshot in snapshot.children) {
+                            val itemKey = itemSnapshot.key
+                            itemKey?.let {
+                                database.child(it).removeValue()
+                                    .addOnSuccessListener {
+                                        Log.d("InventoryViewModel", "Item deleted successfully")
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e("InventoryViewModel", "Failed to delete item: ${e.message}")
+                                    }
+                            }
+                        }
+                    } else {
+                        Log.d("InventoryViewModel", "Item with name $itemName not found")
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("InventoryViewModel", "Failed to retrieve item key: ${error.message}")
+                }
+            })
+    }
+
 }
 
 
